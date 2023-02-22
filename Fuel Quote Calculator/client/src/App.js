@@ -4,12 +4,13 @@ import { FuelHistory } from "./Pages/FuelQuoteHistory/FuelHistory";
 import { ProfileEdit } from "./Pages/Profile/ProfileEdit";
 import ProfileView from "./Pages/Profile/ProfileView";
 import { NotFound } from "./Pages/NotFound";
-import Login from "./Pages/LoginRegister/Login";
+import Login from "./Pages/LoginRegister/Login/Login";
 import WithNav from "./NavigationBar/WithNav";
 import WithoutNav from "./NavigationBar/WithoutNav";
 import {QuoteEdit} from "./Pages/FuelQuote/QuoteEdit";
 import {QuoteView }from "./Pages/FuelQuote/QuoteView";
 import Register from "./Pages/LoginRegister/Register/Register";
+import {Logout} from "./Pages/LoginRegister/Logout";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
         </Route>
         <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
             <Route path="/register" element={<Register />} />
+        </Route>
+        <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
+            <Route path="/logout" element={<Logout />} />
         </Route>
         <Route element={<WithNav />}>
             <Route path="/profile_edit" element={<ProfileEdit />} />
