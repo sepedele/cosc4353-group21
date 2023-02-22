@@ -2,37 +2,36 @@ import { useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useNavigate} from "react-router-dom";
-import "./RegisterForm.css";
+import "./LoginForm.css";
 
-export const RegisterForm = () => {
+export const LoginForm = () => {
     let navigate = useNavigate();
     const schema = yup.object().shape ({
         Username: yup.string().required("A username is required"),
         Password: yup.string().min(4).max(20).required(),
-        ConfirmedPassword: yup.string().oneOf([yup.ref("Password"), null], "Passwords must match").required("This is required"),
     });
 
     const {register, handleSubmit, formState: {errors}} = useForm ({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(schema), // handles frontend validation
     });
     
     const onSubmit = (data) => {
-        console.log(data);
-        //send data to backend to validate and in the mySQL to check that username is unique; learn to send sql error message to frontend! Then navigate!
-        navigate("/profile_edit");
+        console.log(data.Username);
+        // Axios stuff to send here
+        //send data to backend to validate and in the mySQL to check that username/password is valid; learn to send sql error message to frontend! Then navigate!
+        navigate("/profile_view"); // this will occur if validation in backend and mySQL succeeds!
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className = "registerInputs" >
+        <form onSubmit = {handleSubmit(onSubmit)}> {/* Submission occurs if fields are valid*/}
+            <div className = "loginInputs" >
                 <input type = "text" placeholder = "username . . ." {...register("Username")}/>
                 <p> {errors.Username?.message} </p>
                 <input type = "password" placeholder = "password . . ." {...register("Password")}/>
                 <p> {errors.Password?.message} </p>
-                <input type = "password" placeholder = "confirm password . . ." {...register("ConfirmedPassword")}/>
-                <p> {errors.ConfirmedPassword?.message} </p>
-                <div className="signButton"> 
-                    <input type = "submit" value= "Sign Up" />
+
+                <div className = "loginButton" > 
+                    <input type = "submit" value = "Login" />
                 </div>
             </div>
         </form>

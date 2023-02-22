@@ -1,13 +1,12 @@
-.registerInputs {
+.loginInputs {
     display: flex;
     flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
-    background-color: navy;
+    background-color: rgb(185, 185, 40);
     position: absolute;
-    bottom: 90px;
-    width: 100%;
+    bottom: 180px;
 }
 
 input {
@@ -16,15 +15,10 @@ input {
     font-size: 20px;
     padding-left: 10px;
     margin: 5px;
-    background-color: greenyellow;
+    background-color: pink;
     font-family: 'Times New Roman', Times, serif;
 }
 
-.signButton input:hover {
+.loginButton input:hover {
     cursor: pointer;
-}
-
-p {
-    color: red;
-    margin: 3px;
 }

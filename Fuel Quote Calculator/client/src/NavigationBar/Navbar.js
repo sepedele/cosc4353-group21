@@ -8,6 +8,7 @@ export const Navbar = () => {
                 <Link to = "/profile_view"> ProfileView </Link>
                 <Link to = "/quote_edit"> QuoteEdit</Link>
                 <Link to = "/fuel_history"> FuelHistory </Link>
+                <Link to = "/logout"> Logout </Link>
             </div>
         </div>
     );
