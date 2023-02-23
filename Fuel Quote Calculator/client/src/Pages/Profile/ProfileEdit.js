@@ -1,3 +1,3 @@
 export const ProfileEdit = () => {
-    return <h1> this is profile_edit </h1>
+    return <p> this is profile_edit </p>
 };

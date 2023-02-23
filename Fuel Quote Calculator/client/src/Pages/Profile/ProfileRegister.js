@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './ProfileRegister.css';
-
-
+import { useNavigate} from "react-router-dom";
 
 
 const ClientProfileForm = () => {
+  let navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState('');
@@ -14,10 +14,10 @@ const ClientProfileForm = () => {
 
 
   const handleSubmit = (e) => {
+    console.log(fullName);
+    navigate("/profile_view");
     e.preventDefault();
     // handle form submission, e.g. save data to the database
-
-
   };
 
   const handleReset = () => {
@@ -30,7 +30,7 @@ const ClientProfileForm = () => {
   };
 
   return (
-  <div className="container">
+  <div className="profileRegContainer"> {/* changed name from 'container' to 'rectangle' to avoid css overriding in FuelHistory.css*/}
     
     <div className = "registration-heading">
     <h1>Welcome [username]!</h1>

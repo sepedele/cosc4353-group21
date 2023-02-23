@@ -1,0 +1,8 @@
+.errorText {
+    position: absolute;
+    top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}

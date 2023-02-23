@@ -6,7 +6,7 @@ function ProfileView() {
     //let {username} = useParams();
     return (
         <div> 
-            <h1> THIS IS PROFILE </h1>
+            <p> THIS IS PROFILE </p>
             <button 
                 onClick={() => {
                     navigate("/profile_edit");

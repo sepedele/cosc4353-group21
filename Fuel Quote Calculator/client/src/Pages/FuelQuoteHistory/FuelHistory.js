@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";*/
 import { useState } from "react";
 import "./FuelHistory.css";
 import data from "./mock-data.json";
@@ -7,7 +7,7 @@ export const FuelHistory = () => {
   const [quoteHistory, setQuoteHistory] = useState(data);
 
   return (
-    <div className="container">
+    <div className="historyContainer">
       <h1>Quote History</h1>
       <div className="table-wrapper">
         <table>
