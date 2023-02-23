@@ -8,6 +8,7 @@ export const FuelHistory = () => {
 
   return (
     <div className="container">
+      <h1>Quote History</h1>
       <div className="table-wrapper">
         <table>
           <thead>
