@@ -4,7 +4,7 @@ body {
   color: #11151c;
 }
 
-.container {
+.historyContainer {
   display: flex;
   justify-content: center;
   align-items: center;

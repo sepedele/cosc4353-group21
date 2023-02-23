@@ -1,3 +1,3 @@
 export const QuoteView = () => {
-    return <h1> this is about </h1>
+    return <p> this is about </p>
 };

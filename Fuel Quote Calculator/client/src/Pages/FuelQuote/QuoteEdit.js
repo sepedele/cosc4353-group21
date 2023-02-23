@@ -1,3 +1,3 @@
 export const QuoteEdit = () => {
-    return <h1> this is quote_edit </h1>
+    return <p> this is quote_edit </p>
 };

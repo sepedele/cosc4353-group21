@@ -8,7 +8,7 @@ function Register() {
     return (
         <>
         <div className="banner">
-            myApp
+            Register!
         </div>
         <div>
             <RegisterForm/>

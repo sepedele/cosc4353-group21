@@ -8,7 +8,7 @@ function Login() {
     return (
         <>
         <div className="banner">
-            myApp
+            myApp Login
         </div>
         <div>
             <LoginForm/>

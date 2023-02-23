@@ -6,6 +6,7 @@ import "./RegisterForm.css";
 
 export const RegisterForm = () => {
     let navigate = useNavigate();
+    
     const schema = yup.object().shape ({
         Username: yup.string().required("A username is required"),
         Password: yup.string().min(4).max(20).required(),
@@ -19,22 +20,24 @@ export const RegisterForm = () => {
     const onSubmit = (data) => {
         console.log(data);
         //send data to backend to validate and in the mySQL to check that username is unique; learn to send sql error message to frontend! Then navigate!
-        navigate("/profile_edit");
+        navigate("/profile_register");
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className = "registerInputs" >
-                <input type = "text" placeholder = "username . . ." {...register("Username")}/>
-                <p> {errors.Username?.message} </p>
-                <input type = "password" placeholder = "password . . ." {...register("Password")}/>
-                <p> {errors.Password?.message} </p>
-                <input type = "password" placeholder = "confirm password . . ." {...register("ConfirmedPassword")}/>
-                <p> {errors.ConfirmedPassword?.message} </p>
-                <div className="signButton"> 
-                    <input type = "submit" value= "Sign Up" />
+        <div className="registerContainer">
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className = "registerInputs" >
+                    <input type = "text" placeholder = "username . . ." {...register("Username")}/>
+                    <p> {errors.Username?.message} </p>
+                    <input type = "password" placeholder = "password . . ." {...register("Password")}/>
+                    <p> {errors.Password?.message} </p>
+                    <input type = "password" placeholder = "confirm password . . ." {...register("ConfirmedPassword")}/>
+                    <p> {errors.ConfirmedPassword?.message} </p>
+                    <div className="signButton"> 
+                        <input type = "submit" value= "Sign me up!" />
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>    
     );
 };

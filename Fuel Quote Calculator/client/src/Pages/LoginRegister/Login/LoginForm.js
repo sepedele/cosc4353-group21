@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 
 export const LoginForm = () => {
@@ -23,17 +23,19 @@ export const LoginForm = () => {
     };
 
     return (
-        <form onSubmit = {handleSubmit(onSubmit)}> {/* Submission occurs if fields are valid*/}
-            <div className = "loginInputs" >
-                <input type = "text" placeholder = "username . . ." {...register("Username")}/>
-                <p> {errors.Username?.message} </p>
-                <input type = "password" placeholder = "password . . ." {...register("Password")}/>
-                <p> {errors.Password?.message} </p>
+        <div className = "loginContainer">
+            <form onSubmit = {handleSubmit(onSubmit)}> {/* Submission occurs if fields are valid*/}
+                <div className = "loginInputs" >
+                    <input type = "text" placeholder = "username" {...register("Username")}/>
+                    <p> {errors.Username?.message} </p>
+                    <input type = "password" placeholder = "password" {...register("Password")}/>
+                    <p> {errors.Password?.message} </p>
 
-                <div className = "loginButton" > 
-                    <input type = "submit" value = "Login" />
+                    <div className = "loginButton" > 
+                        <input type = "submit" value = "Login" />
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form> 
+        </div>
     );
 };

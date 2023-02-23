@@ -1,27 +1,50 @@
+.registerContainer{
+    background-color: #fff;
+    border-radius: 50px;
+    box-shadow: 12px 12px 5px 1px #C2AFF0;
+    margin: 100px auto;
+    padding: 40px;
+    width: 450px;
+    height: 300px;
+}
+
 .registerInputs {
     display: flex;
     flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
-    background-color: navy;
-    position: absolute;
+    /*background-color: navy;*/
     bottom: 90px;
-    width: 100%;
 }
 
-input {
+.registerInputs input {
     width: 300px;
     height: 50px;
     font-size: 20px;
     padding-left: 10px;
     margin: 5px;
-    background-color: greenyellow;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 100px;
+}
+
+.signButton input {
+    background-color: #C2AFF0;
+    color: #11151C;
+    border: 0px solid #C2AFF0;
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .signButton input:hover {
-    cursor: pointer;
+    background-color: #B8B8AA;
+    color: #fff;
 }
 
 p {
