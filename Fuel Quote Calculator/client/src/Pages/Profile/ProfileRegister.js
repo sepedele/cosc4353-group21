@@ -15,7 +15,7 @@ const ClientProfileForm = () => {
 
   const handleSubmit = (e) => {
     console.log(fullName);
-    navigate("/profile_view");
+    navigate("/profile");
     e.preventDefault();
     // handle form submission, e.g. save data to the database
   };
@@ -50,6 +50,7 @@ const ClientProfileForm = () => {
           required
         />
       </div>
+
       <div className="form-group">
         <label className="form-label" htmlFor="address1">Address 1:</label>
         <input
@@ -62,6 +63,7 @@ const ClientProfileForm = () => {
           required
         />
       </div>
+
       <div className="form-group">
         <label className="form-label" htmlFor="address2">Address 2:</label>
         <input
@@ -73,6 +75,7 @@ const ClientProfileForm = () => {
           onChange={(e) => setAddress2(e.target.value)}
         />
       </div>
+
       <div className="form-group">
         <label className="form-label" htmlFor="city">City:</label>
         <input
@@ -85,6 +88,7 @@ const ClientProfileForm = () => {
           required
         />
       </div>
+
       <div className="form-group">
         <label className="form-label" htmlFor="state">State:</label>
         <select id="state" className="form-control" value={state} onChange={(e) => setState(e.target.value)} required>
@@ -95,6 +99,7 @@ const ClientProfileForm = () => {
           {/* Add more options for all the states */}
         </select>
       </div>
+      
       <div className="form-group">
         <label className="form-label" htmlFor="zipcode">Zipcode:</label>
         <input
