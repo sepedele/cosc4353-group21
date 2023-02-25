@@ -27,7 +27,7 @@ function ProfilePage() {
 
       <form>
         <div className="grid-item">
-        <label className="form-label" htmlFor="fullName">Full Name:</label>
+        <label className="profile-pg-form-label" htmlFor="fullName">Full Name:</label>
           {isEditMode ? (            //if isEditMode is true, then show the input field
             <input 
               className='form-control'
@@ -41,7 +41,7 @@ function ProfilePage() {
         </div>
 
         <div className="grid-item">
-        <label className="form-label" htmlFor="address1">Address 1:</label>
+        <label className="profile-pg-form-label" htmlFor="address1">Address 1:</label>
           {isEditMode ? (
             <input 
               className='form-control'
@@ -55,7 +55,7 @@ function ProfilePage() {
         </div>
 
         <div className="grid-item">
-        <label className="form-label" htmlFor="address2">Address 2:</label>
+        <label className="profile-pg-form-label" htmlFor="address2">Address 2:</label>
           {isEditMode ? (
             <input 
               className='form-control'
@@ -69,7 +69,7 @@ function ProfilePage() {
         </div>
 
         <div className="grid-item">
-        <label className="form-label" htmlFor="city">City:</label>
+        <label className="profile-pg-form-label" htmlFor="city">City:</label>
           {isEditMode ? (
             <input 
               className='form-control'
@@ -83,7 +83,7 @@ function ProfilePage() {
         </div>
 
         <div className="grid-item">
-        <label className="form-label" htmlFor="state">State:</label>
+        <label className="profile-pg-form-label" htmlFor="state">State:</label>
           {isEditMode ? (
             <input 
               className='form-control'
@@ -96,7 +96,7 @@ function ProfilePage() {
 
         </div>
         <div className="grid-item">
-        <label className="form-label" htmlFor="zipcode">Zipcode:</label>
+        <label className="profile-pg-form-label" htmlFor="zipcode">Zipcode:</label>
           {isEditMode ? (
             <input 
               className='form-control'

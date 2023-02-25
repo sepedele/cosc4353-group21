@@ -1,16 +1,15 @@
 import "./App.css";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import { FuelHistory } from "./Pages/FuelQuoteHistory/FuelHistory";
-import { ProfileEdit } from "./Pages/Profile/ProfileEdit";
-import ProfileView from "./Pages/Profile/ProfileView";
 import { NotFound } from "./Pages/NotFound";
 import Login from "./Pages/LoginRegister/Login/Login";
 import WithNav from "./NavigationBar/WithNav";
 import WithoutNav from "./NavigationBar/WithoutNav";
-import {QuoteEdit} from "./Pages/FuelQuote/QuoteEdit";
-import {QuoteView }from "./Pages/FuelQuote/QuoteView";
 import Register from "./Pages/LoginRegister/Register/Register";
 import {Logout} from "./Pages/LoginRegister/Logout";
+import ClientProfileForm from "./Pages/Profile/ProfileRegister";
+import FuelQuoteForm from "./Pages/FuelQuote/FuelQuoteForm";
+import ProfilePage from "./Pages/Profile/ProfilePage";
 
 function App() {
   return (
@@ -25,20 +24,17 @@ function App() {
         <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
             <Route path="/logout" element={<Logout />} />
         </Route>
-        <Route element={<WithNav />}>
-            <Route path="/profile_edit" element={<ProfileEdit />} />
+        <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
+            <Route path="/profile_register" element={<ClientProfileForm/>} />
         </Route>
         <Route element={<WithNav />}>
-            <Route path="/profile_view" element={<ProfileView />} />
+            <Route path="/profile" element={<ProfilePage/>} />
         </Route>
         <Route element={<WithNav />}>
             <Route path="/fuel_history" element={<FuelHistory />} />
         </Route>
         <Route element={<WithNav />}>
-            <Route path="/quote_edit" element={<QuoteEdit />} />
-        </Route>
-        <Route element={<WithNav />}>
-            <Route path="/quote_view" element={<QuoteView />} />
+            <Route path="/quote_form" element={<FuelQuoteForm />} />
         </Route>
         <Route element={<WithoutNav />}>
             <Route path="*" element={<NotFound/>} />
