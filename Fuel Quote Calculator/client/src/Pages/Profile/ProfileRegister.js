@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import './ProfileRegister.css';
-import { useNavigate} from "react-router-dom";
+import { useNavigate, useLocation} from "react-router-dom";
 
 
 const ClientProfileForm = () => {
   let navigate = useNavigate();
+  const {state} = useLocation();
+  const user_id = state.id;
   const [fullName, setFullName] = useState('');
   const [address1, setAddress1] = useState('');
   const [address2, setAddress2] = useState('');
   const [city, setCity] = useState('');
-  const [state, setState] = useState('');
+  const [US_state, setState] = useState('');
   const [zipcode, setZipcode] = useState('');
 
 
   const handleSubmit = (e) => {
-    console.log(fullName);
+    console.log(user_id);
     navigate("/profile");
     e.preventDefault();
     // handle form submission, e.g. save data to the database
@@ -90,8 +92,8 @@ const ClientProfileForm = () => {
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="state">State:</label>
-        <select id="state" className="form-control" value={state} onChange={(e) => setState(e.target.value)} required>
+        <label className="form-label" htmlFor="US_state">State:</label>
+        <select id="US_state" className="form-control" value={US_state} onChange={(e) => setState(e.target.value)} required>
           <option value="">--Select--</option>
           <option value="AL">Alabama</option>
           <option value="AK">Alaska</option>

@@ -50,14 +50,14 @@ body {
   }
 
   /*Styling for  buttons*/
-  .form-buttons {
+  .profile-form-buttons {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
   }
   
-  .form-buttons button {
+  .profile-form-buttons button {
     background-color: #C2AFF0;
     color: #11151C;
     border: 0px solid #C2AFF0;
@@ -71,7 +71,7 @@ body {
     transition: all 0.3s ease;
   }
   
-  .form-buttons button:hover {
+  .profile-form-buttons button:hover {
     background-color: #B8B8AA;
     color: #fff;
   }

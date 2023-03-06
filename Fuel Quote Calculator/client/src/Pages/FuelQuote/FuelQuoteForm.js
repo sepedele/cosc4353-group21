@@ -1,6 +1,8 @@
-import './FuelQuoteForm.css'
-import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import {useLocation, generatePath, useNavigate} from "react-router-dom";
+import "../../nav.css";
+import './FuelQuoteForm.css';
+
 
 function TotalPrice() { // This will end up being a backend function that calculates suggested price and total only triggered by button
   const gallonVal = document.getElementById('gallons').value; // get 'gallons' value from form
@@ -10,7 +12,10 @@ function TotalPrice() { // This will end up being a backend function that calcul
 }
 
 function FuelQuoteForm() {
-  let navigate = useNavigate();
+  let navigate = useNavigate();  
+  const {state} = useLocation();
+  const user_id = state.id;
+
   const [gallons, setGallons] = useState('');
 
   const handleQuoteSubmit = (e) => {
@@ -20,6 +25,48 @@ function FuelQuoteForm() {
   };
 
   return (
+    <>
+
+    <div className = "navigation_bar">
+      <div className = "links" >
+        <button
+            onClick={() => {
+                const path = generatePath('/profile/:id', {id: user_id});
+                navigate(path, {state: {id: user_id}});
+            }}
+        > 
+        Profile
+        </button>
+
+        <button 
+            onClick={() => {
+                const path = generatePath('/fuel_quote/:id', {id: user_id});
+                navigate(path, {state: {id: user_id}});
+            }}
+        > 
+        Fuel Quote
+        </button>
+
+        <button 
+            onClick={() => {
+              const path = generatePath('/fuel_history/:id', {id: user_id});
+              navigate(path, {state: {id: user_id}});
+            }}
+        > 
+        Fuel History
+        </button>
+
+        <button 
+            onClick={() => {
+                navigate('/');
+            }}
+        > 
+        Logout
+        </button>
+
+      </div>
+    </div>
+
     <div className="fuelQuoteContainer">
       <div className ="fuel-paragraph">
       <h1>Fuel Quote Form</h1>
@@ -93,6 +140,7 @@ function FuelQuoteForm() {
       </form>
 
     </div>
+    </>
   );
 };
 
