@@ -25,7 +25,7 @@
     margin-top: 0px;
 }
 
-button {
+.signSection button {
     width: 280px;
     height: 30px;
     margin-top: 5px;
@@ -42,7 +42,7 @@ button {
     transition: all 0.3s ease;
 }
 
-button:hover {
+.signSection button:hover {
     background-color: #B8B8AA;
     color: #fff;
 }

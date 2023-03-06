@@ -1,14 +1,20 @@
 //code for the profile page
 
 import React, { useState } from 'react';
+import {useLocation, generatePath, useNavigate} from "react-router-dom";
+import "../../nav.css";
 import './ProfilePage.css';
 
 function ProfilePage() {
+  let navigate = useNavigate();
+  const {state} = useLocation();
+  const user_id = state.id;
+
   const [fullName, setName] = useState('Giovanni Gonzalez');
   const [address1, setAddress1] = useState('123 Main St');
   const [address2, setAddress2] = useState('');
   const [city, setCity] = useState('Houston');
-  const [state, setState] = useState('Texas');
+  const [US_state, setState] = useState('Texas');
   const [zipcode, setZipcode] = useState('12345');
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -21,6 +27,47 @@ function ProfilePage() {
   };
 
   return (
+    <>
+
+    <div className = "navigation_bar">
+            <div className = "links" >
+            <button
+                onClick={() => {
+                    const path = generatePath('/profile/:id', {id: user_id});
+                    navigate(path, {state: {id: user_id}});
+                }}
+            > 
+            Profile
+            </button>
+
+            <button 
+                onClick={() => {
+                    const path = generatePath('/fuel_quote/:id', {id: user_id});
+                    navigate(path, {state: {id: user_id}});
+                }}
+            > 
+            Fuel Quote
+            </button>
+
+            <button 
+                onClick={() => {
+                  const path = generatePath('/fuel_history/:id', {id: user_id});
+                  navigate(path, {state: {id: user_id}});
+                }}
+            > 
+            Fuel History
+            </button>
+
+            <button 
+                onClick={() => {
+                    navigate('/');
+                }}
+            > 
+            Logout
+            </button>
+
+            </div>
+    </div>
 
     <div className="grid-container">
       <h1>Profile Page</h1>
@@ -33,10 +80,10 @@ function ProfilePage() {
               className='form-control'
               type="text" 
               id="name" 
-              value={fullName} 
+              value={user_id} 
               onChange={(e) => setName(e.target.value)} />
           ) : (
-            <span>{fullName}</span>   //if isEditMode is false, then show the span
+            <span>{user_id}</span>   //if isEditMode is false, then show the span
           )}
         </div>
 
@@ -87,11 +134,11 @@ function ProfilePage() {
           {isEditMode ? (
             <input 
               className='form-control'
-              id="state" 
-              value={state} 
+              id="US_state" 
+              value={US_state} 
               onChange={(e) => setState(e.target.value)} />
           ) : (
-            <span>{state}</span>
+            <span>{US_state}</span>
           )}
 
         </div>
@@ -111,7 +158,7 @@ function ProfilePage() {
         </div>
       </form>
 
-      <div className="form-buttons">
+      <div className="profile-form-buttons">
       {isEditMode ? (
         <button onClick={handleSaveClick}>Save</button>
       ) : (
@@ -120,6 +167,8 @@ function ProfilePage() {
       </div>
 
     </div>
+
+    </>
   );
 }
 

@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, generatePath } from "react-router-dom";
+import Axios from 'axios';
 import "./LoginForm.css";
 
 export const LoginForm = () => {
@@ -16,10 +17,29 @@ export const LoginForm = () => {
     });
     
     const onSubmit = (data) => {
-        console.log(data.Username);
         // Axios stuff to send here
         //send data to backend to validate and in the mySQL to check that username/password is valid; learn to send sql error message to frontend! Then navigate!
-        navigate("/profile_view"); // this will occur if validation in backend and mySQL succeeds!
+        Axios.post("http://localhost:3001/user_login", { // sending login info to backend
+            username: data.Username,
+            password: data.Password,
+            }).then((response) => {
+                if(!(response.data.isError))
+                {
+                    if(response.data.loginReload)
+                        console.log('reload');
+                    else
+                        if(response.data.isFirst) {
+                            const path = generatePath('/profile_register/:id', {id: response.data.user_id});
+                            navigate(path, {state: {id: response.data.user_id}});
+                        }
+                        else {
+                            const path = generatePath('/profile/:id', {id: response.data.user_id});
+                            navigate(path, {state: {id: response.data.user_id}});
+                        }
+                }
+                else
+                    console.log(response.data.responseError.errors[0]);
+            });
     };
 
     return (
