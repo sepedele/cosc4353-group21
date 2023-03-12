@@ -5,17 +5,21 @@ body {
 }
 
 .historyContainer {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 100px);
   flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
 }
 
 h1 {
-  margin-top: -30px;
-  font-size: px;
-  font-weight: 370;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 20px;
   text-align: center;
   color: black;
 }
@@ -23,11 +27,11 @@ h1 {
 .table-wrapper {
   overflow-x: auto;
   width: fit-content;
-  /* max-width: 100%; */
   border-radius: 20px;
   border: none;
   margin-top: 12px;
-  max-height: 77%;
+  max-height: calc(100% - 70px);
+  margin-bottom: 43px;
   overflow-y: scroll;
   box-shadow: 8px 8px 4px 1px #c2aff0;
 }
