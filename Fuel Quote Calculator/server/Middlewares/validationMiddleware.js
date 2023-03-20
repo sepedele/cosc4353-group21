@@ -6,7 +6,7 @@ const validation = (schema) => async (req, res, next) => {
         next();
     } 
     catch(error) {
-        res.send({isError: true, responseError: error});
+        res.status(400).send({responseError: error.errors[0]});
     }
 }
 

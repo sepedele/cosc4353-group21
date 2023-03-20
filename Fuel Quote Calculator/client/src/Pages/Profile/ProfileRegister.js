@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './ProfileRegister.css';
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, generatePath, useLocation} from "react-router-dom";
 
 
 const ClientProfileForm = () => {
@@ -17,7 +17,8 @@ const ClientProfileForm = () => {
 
   const handleSubmit = (e) => {
     console.log(user_id);
-    navigate("/profile");
+    const path = generatePath('/profile/:id', {id: user_id});
+    navigate(path, {state: {id: user_id}});
     e.preventDefault();
     // handle form submission, e.g. save data to the database
   };
