@@ -23,22 +23,18 @@ export const LoginForm = () => {
             username: data.Username,
             password: data.Password,
             }).then((response) => {
-                if(!(response.data.isError))
-                {
-                    if(response.data.loginReload)
-                        console.log('reload');
-                    else
-                        if(response.data.isFirst) {
-                            const path = generatePath('/profile_register/:id', {id: response.data.user_id});
-                            navigate(path, {state: {id: response.data.user_id}});
-                        }
-                        else {
-                            const path = generatePath('/profile/:id', {id: response.data.user_id});
-                            navigate(path, {state: {id: response.data.user_id}});
-                        }
+                console.log(response.data.responseMsg);
+                if(response.data.isFirst) {
+                    const path = generatePath('/profile_register/:id', {id: response.data.user_id});
+                    navigate(path, {state: {id: response.data.user_id}});
                 }
-                else
-                    console.log(response.data.responseError.errors[0]);
+                else {
+                    const path = generatePath('/profile/:id', {id: response.data.user_id});
+                    navigate(path, {state: {id: response.data.user_id}});
+                }
+            }).catch((err) => {
+                //window.location.reload(false);
+                console.log(err.response.data.responseMsg);
             });
     };
 

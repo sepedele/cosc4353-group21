@@ -1,20 +1,20 @@
 const express = require('express');
-const app = express();
+const register = express();
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 
-app.use(cors());
-app.use(express.json());
+register.use(cors());
+register.use(express.json());
 
 const validation = require('../../Middlewares/validationMiddleware');
-const userSchema = require('../../Validations/loginValidation');
+const userSchema = require('../../Validations/credentialValidation');
 
 const users = [
     {username: 'ocano', password: '1234', id: 1, firstTime: true},
     {username: 'duck', password: '5678', id: 2, firstTime: false}
 ]
 
-app.post('/user_register', validation(userSchema), (req, res) => {
+register.post('/user_register', validation(userSchema), (req, res) => {
     console.log('Trying to create new user...')
 
     console.log('Username: ' + req.body.username)
@@ -24,21 +24,22 @@ app.post('/user_register', validation(userSchema), (req, res) => {
     const checkUser = users.find(index => index.username == req.body.username)
     if (checkUser == null) {
         const newID = (users.slice(-1))[0].id + 1; 
-        const user = {
+        const newUser = {
             username: req.body.username,
             password: req.body.password,
             id: newID,
             firstTime: true
         };
-        users.push(user);
-        console.log('New user created: ' + user.id);
+        users.push(newUser);
+        console.log('New user created with id: ' + newUser.id);
         console.log(users);
 
-        res.send({loginRedirect: true}); // redirect to login page! no need to send id value since login will take care of that
-    } else {
-        console.log('The username ' + checkUser.username + ' is already in use')
-        res.send({loginRedirect: false}); // this means to refresh register page
+        res.send({responseMsg: 'The username ' + newUser.username + ' is now registered!'});
+    } 
+    else {
+        console.log('The username ' + checkUser.username + ' is already in use');
+        res.status(400).send({responseMsg: 'The username ' + checkUser.username + ' is already in use'});
     }
 });
 
-module.exports = app;
+module.exports = register;
