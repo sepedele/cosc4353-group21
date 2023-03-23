@@ -8,7 +8,7 @@ import "./LoginForm.css";
 export const LoginForm = () => {
     let navigate = useNavigate();
     const schema = yup.object().shape ({
-        Username: yup.string().required("A username is required"),
+        Username: yup.string().min(4).max(20).required("A username is required"),
         Password: yup.string().min(4).max(20).required(),
     });
 
