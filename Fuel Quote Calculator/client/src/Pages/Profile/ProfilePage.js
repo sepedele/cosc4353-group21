@@ -5,25 +5,36 @@ import {useLocation, generatePath, useNavigate} from "react-router-dom";
 import "../../nav.css";
 import './ProfilePage.css';
 
-function ProfilePage() {
+const ProfilePage() => {
   let navigate = useNavigate();
   const {state} = useLocation();
   const user_id = state.id;
 
-  const [fullName, setName] = useState('Giovanni Gonzalez');
-  const [address1, setAddress1] = useState('123 Main St');
-  const [address2, setAddress2] = useState('');
-  const [city, setCity] = useState('Houston');
-  const [US_state, setState] = useState('Texas');
-  const [zipcode, setZipcode] = useState('12345');
-  const [isEditMode, setIsEditMode] = useState(false);
-
-  const handleEditClick = () => {
-    setIsEditMode(true);
+  const initialState = {
+    fullName: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zipcode: ""
   };
 
-  const handleSaveClick = () => {
-    setIsEditMode(false);
+  //set state for form data and saved data
+  const [formData, setFormData] = useState(initialState);
+  const [savedData, setSavedData] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+
+  //handle change and submit functions
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  //saves form data to saved data and sets edit mode to false
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSavedData(formData);
+    setEditMode(false);
   };
 
   return (
@@ -69,107 +80,155 @@ function ProfilePage() {
             </div>
     </div>
 
-    <div className="grid-container">
-      <h1>Profile Page</h1>
+    div className="grid-container">
 
-      <form>
-        <div className="grid-item">
-        <label className="profile-pg-form-label" htmlFor="fullName">Full Name:</label>
-          {isEditMode ? (            //if isEditMode is true, then show the input field
-            <input 
-              className='form-control'
-              type="text" 
-              id="name" 
-              value={user_id} 
-              onChange={(e) => setName(e.target.value)} />
-          ) : (
-            <span>{user_id}</span>   //if isEditMode is false, then show the span
-          )}
-        </div>
+      <h1>My Profile</h1>
 
-        <div className="grid-item">
-        <label className="profile-pg-form-label" htmlFor="address1">Address 1:</label>
-          {isEditMode ? (
-            <input 
-              className='form-control'
-              type="address1" 
-              id="address" 
-              value={address1} 
-              onChange={(e) => setAddress1(e.target.value)} />
-          ) : (
-            <span>{address1}</span>
-          )}
-        </div>
+      {/* if edit mode is false and saved data is not null, display saved data */}
+      {editMode || !savedData ? (
 
-        <div className="grid-item">
-        <label className="profile-pg-form-label" htmlFor="address2">Address 2:</label>
-          {isEditMode ? (
-            <input 
-              className='form-control'
-              type="text" 
-              id="address" 
-              value={address2} 
-              onChange={(e) => setAddress2(e.target.value)} />
-          ) : (
-            <span>{address2}</span>
-          )}
-        </div>
+        <form onSubmit={handleSubmit} data-testid="profile-form">
+          <div className="grid-item">
+            <label className="form-label" htmlFor="fullName">
+              Full Name:
+              <input
+                id="fullName"
+                className="form-control"
+                type="text"
+                name="fullName"
+                maxLength="50"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
 
-        <div className="grid-item">
-        <label className="profile-pg-form-label" htmlFor="city">City:</label>
-          {isEditMode ? (
-            <input 
-              className='form-control'
-              type="tel" 
-              id="phone" 
-              value={city} 
-              onChange={(e) => setCity(e.target.value)} />
-          ) : (
-            <span>{city}</span>
-          )}
-        </div>
+          
+          <div className="grid-item">
+            <label className="form-label" htmlFor="address1">
+              Address 1:
+              <input
+                id="address1"
+                className="form-control"
+                type="text"
+                name="address1"
+                maxLength="100"
+                value={formData.address1}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
 
-        <div className="grid-item">
-        <label className="profile-pg-form-label" htmlFor="state">State:</label>
-          {isEditMode ? (
-            <input 
-              className='form-control'
-              id="US_state" 
-              value={US_state} 
-              onChange={(e) => setState(e.target.value)} />
-          ) : (
-            <span>{US_state}</span>
-          )}
+          
+          <div className="grid-item">
+            <label className="form-label" htmlFor="address2">
+              Address 2 (Optional):
+              <input
+                id="address2"
+                className="form-control"
+                type="text"
+                name="address2"
+                maxLength="100"
+                value={formData.address2}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
 
-        </div>
-        <div className="grid-item">
-        <label className="profile-pg-form-label" htmlFor="zipcode">Zipcode:</label>
-          {isEditMode ? (
-            <input 
-              className='form-control'
-              type="text" 
-              id="zipcode"
-              value={zipcode} 
-              onChange={(e) => setZipcode(e.target.value)} />
-          ) : (
-            <span>{zipcode}</span>
-          )}
+          
+          <div className="grid-item">
+            <label className="form-label" htmlFor="city">
+              City:
+              <input
+                id="city"
+                className="form-control"
+                type="text"
+                name="city"
+                maxLength="100"
+                value={formData.city}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
 
-        </div>
-      </form>
+          
+          <div className="grid-item">
+            <label className="form-label" htmlFor="state">
+              State:
+              <select
+                id="state"
+                className="form-control"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select a state</option>
+                {/* Add your state options here */}
+                <option value="CA">California</option>
+                <option value="NY">New York</option>
+                {/* ... */}
+              </select>
+            </label>
+          </div>
 
-      <div className="profile-form-buttons">
-      {isEditMode ? (
-        <button onClick={handleSaveClick}>Save</button>
+          
+          <div className="grid-item">
+            <label className="form-label" htmlFor="zipcode">
+              Zipcode:
+              <input
+                id="zipcode"
+                className="form-control"
+                type="text"
+                name="zipcode"
+                minLength="5"
+                maxLength="9"
+                pattern="\d*"
+                value={formData.zipcode}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
+
+          <div className="form-buttons">
+            <button type="submit">Save</button>
+          </div>
+
+        </form>
       ) : (
-        <button onClick={handleEditClick}>Edit</button>
+
+        
+        <div>
+          <h2>Saved Data</h2>
+          <p>
+            <strong>Full Name:</strong> {savedData.fullName}
+          </p>
+          <p>
+            <strong>Address 1:</strong> {savedData.address1}
+          </p>
+          <p>
+            <strong>Address 2:</strong> {savedData.address2}
+          </p>
+          <p>
+            <strong>City:</strong> {savedData.city}
+          </p>
+          <p>
+            <strong>State:</strong> {savedData.state}
+          </p>
+          <p>
+            <strong>Zipcode:</strong> {savedData.zipcode}
+          </p>
+          <div className="form-buttons">
+          <button onClick={handleEdit} type = "button" >Edit</button>
+          </div>
+        </div>
       )}
-      </div>
-
     </div>
-
-    </>
   );
-}
+};
 
 export default ProfilePage;
