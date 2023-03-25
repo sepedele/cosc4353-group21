@@ -1,48 +1,35 @@
 import "./App.css";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import { FuelHistory } from "./Pages/FuelQuoteHistory/FuelHistory";
-import { ProfileEdit } from "./Pages/Profile/ProfileEdit";
-import ProfileView from "./Pages/Profile/ProfileView";
+import FuelHistory from "./Pages/FuelQuoteHistory/FuelHistory";
 import { NotFound } from "./Pages/NotFound";
 import Login from "./Pages/LoginRegister/Login/Login";
-import WithNav from "./NavigationBar/WithNav";
-import WithoutNav from "./NavigationBar/WithoutNav";
-import {QuoteEdit} from "./Pages/FuelQuote/QuoteEdit";
-import {QuoteView }from "./Pages/FuelQuote/QuoteView";
 import Register from "./Pages/LoginRegister/Register/Register";
 import {Logout} from "./Pages/LoginRegister/Logout";
+import ClientProfileForm from "./Pages/Profile/ProfileRegister";
+import FuelQuoteForm from "./Pages/FuelQuote/FuelQuoteForm";
+import ProfilePage from "./Pages/Profile/ProfilePage";
 
 function App() {
   return (
     <Router> {/* this tells where in the app do you want router dom stuff*/}
       <Routes> {/* the possible Routes for the app*/}
-        <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
-            <Route path="/" element={<Login />} />
-        </Route>
-        <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
-            <Route path="/register" element={<Register />} />
-        </Route>
-        <Route element={<WithoutNav />}> {/* excludes navigation bar*/}
-            <Route path="/logout" element={<Logout />} />
-        </Route>
-        <Route element={<WithNav />}>
-            <Route path="/profile_edit" element={<ProfileEdit />} />
-        </Route>
-        <Route element={<WithNav />}>
-            <Route path="/profile_view" element={<ProfileView />} />
-        </Route>
-        <Route element={<WithNav />}>
-            <Route path="/fuel_history" element={<FuelHistory />} />
-        </Route>
-        <Route element={<WithNav />}>
-            <Route path="/quote_edit" element={<QuoteEdit />} />
-        </Route>
-        <Route element={<WithNav />}>
-            <Route path="/quote_view" element={<QuoteView />} />
-        </Route>
-        <Route element={<WithoutNav />}>
-            <Route path="*" element={<NotFound/>} />
-        </Route>
+
+        <Route path="/" element={<Login />} />
+
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/logout" element={<Logout />} />
+
+        <Route path="/profile_register/:id" element={<ClientProfileForm/>} />
+    
+        <Route path="/profile/:id" element={<ProfilePage/>} />
+    
+        <Route path="/fuel_history/:id" element={<FuelHistory />} />
+
+        <Route path="/fuel_quote/:id" element={<FuelQuoteForm />} />
+    
+        <Route path="*" element={<NotFound/>} />
+        
       </Routes>
     </Router>
   ); 
