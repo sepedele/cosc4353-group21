@@ -5,9 +5,9 @@ describe("Regsiter Module", () => {
 
     describe("Given a username and password", () => {
 
-        test("should respond with a 200 status code if username valid", async () => {
+        test("should respond with a 200 status code if username valid", async () => { 
             const response = await request(register).post("/user_register").send({
-                username: "username",
+                username: "username10", // the username has to keep changing when running the test!
                 password: "password"
             })
             expect(response.statusCode).toBe(200)

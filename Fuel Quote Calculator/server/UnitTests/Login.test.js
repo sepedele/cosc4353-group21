@@ -7,8 +7,8 @@ describe("Login Module", () => {
 
         test("should respond with a 200 status code and have defined response values given correct credentials", async () => {
             const response = await request(login).post("/user_login").send({
-                username: "ocano",
-                password: "1234" // these credentials exist in the user array in Login.js
+                username: "hmwhite",
+                password: "1234" // these credentials exist in SQL database
             })
             expect(response.statusCode).toBe(200)
             expect(response.body.isFirst).toBeDefined()
@@ -25,7 +25,7 @@ describe("Login Module", () => {
 
         test("should respond with a 400 status code with invalid credentials", async () => {
             const response = await request(login).post("/user_login").send({
-                username: "username",
+                username: "username1000",
                 password: "password"
             })
             expect(response.statusCode).toBe(400)
@@ -33,8 +33,8 @@ describe("Login Module", () => {
 
         test("should specify json in the content type header", async () => {
             const response = await request(login).post("/user_login").send({
-                username: "duck",
-                password: "5678"
+                username: "hmwhite",
+                password: "1234"
             })
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
         })
