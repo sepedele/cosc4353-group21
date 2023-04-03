@@ -36,7 +36,8 @@ function FuelQuoteForm() {
     Axios.post("http://localhost:3001/create", {
       gallons: gallons,
       delivery_date: delivery_date,
-      total: total
+      total: total,
+      user_id: user_id
     }).then((response) => {
       // console.log("working");
     }).catch((err) => {
@@ -169,6 +170,7 @@ function FuelQuoteForm() {
               className ="form-control"
               name="amount_due" 
               id="total"
+              value = {total}
               readOnly={true}
               onChange={(event) => {
                 setTotal(event.target.value);   //need to make this value readable to backend when it's updated automatically...
