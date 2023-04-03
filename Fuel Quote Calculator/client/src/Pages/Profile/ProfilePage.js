@@ -5,7 +5,7 @@ import {useLocation, generatePath, useNavigate} from "react-router-dom";
 import "../../nav.css";
 import './ProfilePage.css';
 
-const ProfilePage() => {
+const ProfilePage = () => {
   let navigate = useNavigate();
   const {state} = useLocation();
   const user_id = state.id;
@@ -13,7 +13,7 @@ const ProfilePage() => {
   const initialState = {
     fullName: "",
     address1: "",
-    address2: "",
+    address2: "", 
     city: "",
     state: "",
     zipcode: ""
@@ -35,6 +35,10 @@ const ProfilePage() => {
     e.preventDefault();
     setSavedData(formData);
     setEditMode(false);
+  };
+
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
   return (
@@ -80,7 +84,7 @@ const ProfilePage() => {
             </div>
     </div>
 
-    div className="grid-container">
+    <div className="grid-container">
 
       <h1>My Profile</h1>
 
@@ -226,8 +230,10 @@ const ProfilePage() => {
           <button onClick={handleEdit} type = "button" >Edit</button>
           </div>
         </div>
+        
       )}
     </div>
+    </>
   );
 };
 
