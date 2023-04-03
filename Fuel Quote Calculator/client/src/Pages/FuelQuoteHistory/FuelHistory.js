@@ -22,7 +22,7 @@ function FuelHistory() {
     const fetchData = async () => {
       try {
         const response = await api.get("/quote_history");
-        setQuoteHistory(response.data);
+        setQuoteHistory(response);
       } catch (error) {
         console.error(error);
         setErrorMessage("An error occurred while fetching quote history.");
@@ -86,15 +86,20 @@ function FuelHistory() {
               </tr>
             </thead>
             <tbody>
-              {quoteHistory.map((quote) => (
-                <tr /*add key*/>
-                  <td>{quote.gallons_requested}</td>
-                  <td>{quote.delivery_address}</td>
-                  <td>{quote.delivery_date}</td>
-                  <td>{quote.suggested_price_per_gallon}</td>
-                  <td>{quote.total_amount_due}</td>
-                </tr>
-              ))}
+              {quoteHistory.map((quote) => {
+                if (quote.user_id !== user_id) {
+                  return null; // don't render the row
+                }
+                return (
+                  <tr key={quote.id}>
+                    <td>{quote.gallonsRequested}</td>
+                    <td>{quote.address}</td>
+                    <td>{quote.date}</td>
+                    <td>{quote.suggestedPrice}</td>
+                    <td>{quote.total}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
