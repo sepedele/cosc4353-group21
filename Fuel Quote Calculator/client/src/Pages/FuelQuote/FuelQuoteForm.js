@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useLocation, generatePath, useNavigate} from "react-router-dom";
 import Axios from 'axios';
 import "../../nav.css";
@@ -6,13 +6,6 @@ import './FuelQuoteForm.css';
 import {useForm} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
-function TotalPrice() { // This will end up being a backend function that calculates suggested price and total only triggered by button
-  const gallonVal = document.getElementById('gallons').value; // get 'gallons' value from form
-  const priceVal = document.getElementById('price').value; // get 'price' value from form
-  const totalVal = gallonVal*priceVal;
-  document.getElementById('total').value = totalVal;
-}
 
 const fuelSchema = yup.object().shape({
   gallons: yup.number().required,
@@ -26,43 +19,78 @@ function FuelQuoteForm() {
 
   const [gallons, setGallons] = useState('');
   const [delivery_date, setDate] = useState('');
+  const [delivery_address, setAddress] = useState('');
+  const [price, setPrice] = useState(0);
   const [total, setTotal] = useState(0);
+  const [submitDisabled, setSubmitDisabled] = useState(true); // used to disable submit quote button
+  const [isGalDisabled, setGalDisabled] = useState(false); // used to disable gallon number after getting quote and total
 
   const {register, handleSubmit, formState: {errors}} = useForm ({
     resolver: yupResolver(fuelSchema)
   });
-  
-  function sendInfo() { //sending data to backend
-    Axios.post("http://localhost:3001/create", {
-      gallons: gallons,
-      delivery_date: delivery_date,
-      total: total,
-      user_id: user_id
+
+  const getQuote = () => { // calls Pricing modile backend function that calculates suggested price and total only triggered by getQuote button
+    Axios.post("http://localhost:3001/getQuote" , {
+      user_id: user_id,
+      gallons: gallons
     }).then((response) => {
-      // console.log("working");
+      setTotal(response.data.total);
+      setPrice(response.data.suggested_price);
+    }).catch((err) => {
+      console.log(err);
+    });
+    setSubmitDisabled(false);
+    setGalDisabled(true);
+  }
+  
+  const getAddress = () => {  //retrieving address from backend
+    Axios.post("http://localhost:3001/getAddress" , {
+      user_id: user_id,
+    }).then((response) => {
+      setAddress(response.data.delivery_address);
     }).catch((err) => {
       console.log(err);
     });
   }
-  
-  function getInfo() {  //retrieving data from backend
-    Axios.get("http://localhost:3001/getInfo", {
 
-    }).then((response) => {
-      document.getElementById('Daddress').value = response.data.delivery_address;
-      document.getElementById('price').value = response.data.suggested_price;
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
-
-  const handleQuoteSubmit = (e) => {
-  // console.log(gallons);
-  // console.log(delivery_date);
-  // console.log(total);
-  // navigate("/fuel_history");
-  e.preventDefault();
+  const handleReset = () => {
+    setGallons(0);
+    setDate('');
+    setTotal(0);
+    setPrice(0);
+    setSubmitDisabled(true);
+    setGalDisabled(false);
   };
+  
+  const handleQuoteSubmit = (e) => { //sending data to backend
+    console.log(e.nativeEvent.submitter.id); // prints id of specific button
+    if(e.nativeEvent.submitter.id === 'submitQuote')
+    {  
+      Axios.post("http://localhost:3001/submitQuote", {
+        gallons: gallons,
+        delivery_date: delivery_date,
+        delivery_address: delivery_address,
+        total: total,
+        user_id: user_id,
+        suggested_price: price,
+      }).then((response) => {
+        console.log(response.data.responseMsg); // prints success message
+        handleReset();
+        const path = generatePath('/fuel_history/:id', {id: user_id});
+        navigate(path, {state: {id: user_id}}); // navigate to history
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+    else
+      getQuote();
+
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    getAddress();
+  });
 
   return (
     <>
@@ -117,13 +145,15 @@ function FuelQuoteForm() {
         <div className="form-group">
           <label className="form-label">Gallons Requested:</label>
             <input
-              type="number" 
-              min="0"
-              className ="form-control"
-              pattern="[0-9]*"
-              name="gallons_requested"
               id="gallons"
-              onInput={(e) => {setGallons(Math.abs(e.target.value)); TotalPrice();}}
+              className ="form-control"
+              type="number" 
+              min="1"
+              pattern="[1-9]*"
+              //name="gallons_requested"
+              value = {gallons}
+              readOnly = {isGalDisabled}
+              onInput={(e) => {setGallons(Math.abs(e.target.value))}}
               required
             />
         </div>
@@ -131,10 +161,11 @@ function FuelQuoteForm() {
         <div className="form-group">
           <label className="form-label">Delivery Address:</label>
             <input 
-              type="text" 
+              id="Daddress" 
               className ="form-control"
-              name="delivery_address" 
-              id="Daddress"
+              type="text"
+              //name="delivery_address"  
+              value = {delivery_address}   
               readOnly={true}
             />
         </div>
@@ -142,23 +173,26 @@ function FuelQuoteForm() {
         <div className="form-group">
           <label className="form-label">Delivery Date:</label>
             <input 
-              type="date" 
+              id="Ddate" 
               className ="form-control"
-              name="delivery_date"
-              id="Ddate"
+              type="date"
+              //name="delivery_date"
+              value = {delivery_date}
               onChange={(event) => {
                 setDate(event.target.value);
               }}
+              required
             />
         </div>
 
         <div className="form-group">
           <label className="form-label">Suggested Price:</label>
             <input 
-              type="number" 
+              id="price" 
               className ="form-control"
-              name="suggested_price" 
-              id="price"
+              type="number"
+              //name="suggested_price" 
+              value = {price}
               readOnly={true}
             />
         </div>
@@ -166,10 +200,10 @@ function FuelQuoteForm() {
         <div className="form-group">
           <label className="form-label">Total Amount Due:</label>       
             <input 
-              type="number" 
-              className ="form-control"
-              name="amount_due" 
               id="total"
+              className ="form-control"
+              type="number"
+              //name="amount_due" 
               value = {total}
               readOnly={true}
               onChange={(event) => {
@@ -178,12 +212,12 @@ function FuelQuoteForm() {
             />
         </div>
 
-          <div className="form-buttons">
-          <button type="button" onClick={getInfo}>Retrieve</button>
-          <button type="button" id="calculatorButton" onClick={TotalPrice}>Calculate</button> 
-          <button type="submit" onClick={sendInfo}>Submit</button>
-          {/*add a third button that resets/cancels the fields? Like ProfileRegister*/}
+        <div className="form-buttons">
+          <button type="button" id="resetButton" onClick = {handleReset}>Reset</button> 
+          <button type="submit" id="getQuoteButton">Get Quote</button> 
+          <button type="submit" id="submitQuote" disabled = {submitDisabled} >Submit Quote</button>
         </div>
+
       </form>
 
     </div>
