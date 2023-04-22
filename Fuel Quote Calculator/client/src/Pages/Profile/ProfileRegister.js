@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './ProfileRegister.css';
 import { useNavigate, generatePath, useLocation} from "react-router-dom";
+import Axios from 'axios';
+import states from './US_States';
 
 
 const ClientProfileForm = () => {
@@ -15,14 +17,29 @@ const ClientProfileForm = () => {
   const [zipcode, setZipcode] = useState('');
 
 
-  const handleSubmit = (e) => {
-    console.log(user_id);
-    const path = generatePath('/profile/:id', {id: user_id});
-    navigate(path, {state: {id: user_id}});
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // handle form submission, e.g. save data to the database
+  
+    try {
+      const response = await Axios.post("http://localhost:3001/profile_register", {
+        user_id: user_id,
+        fullName: fullName,
+        address1: address1,
+        address2: address2,
+        city: city,
+        state: US_state,
+        zipcode: zipcode,
+      });
+  
+      console.log(response.data.responseMsg);
+      const path = generatePath("/profile/:id", { id: user_id });
+      navigate(path, { state: { id: user_id } });
+    } catch (err) {
+      console.log(err.response.data.responseMsg);
+    }
   };
-
+  
+  
   const handleReset = () => {
     setFullName('');
     setAddress1('');
@@ -36,7 +53,7 @@ const ClientProfileForm = () => {
   <div className="profileRegContainer"> {/* changed name from 'container' to 'rectangle' to avoid css overriding in FuelHistory.css*/}
     
     <div className = "registration-heading">
-    <h1>Welcome [username]!</h1>
+    <h1>Welcome!</h1>
     <p>Please fill out the information below to complete registration.</p>
     </div>
     
@@ -95,11 +112,12 @@ const ClientProfileForm = () => {
       <div className="form-group">
         <label className="form-label" htmlFor="US_state">State:</label>
         <select id="US_state" className="form-control" value={US_state} onChange={(e) => setState(e.target.value)} required>
-          <option value="">--Select--</option>
-          <option value="AL">Alabama</option>
-          <option value="AK">Alaska</option>
-          <option value="AZ">Arizona</option>
-          {/* Add more options for all the states */}
+        <option value="">--Select--</option>
+          {states.map((state) => (
+            <option key={state.abbr} value={state.abbr}>
+              {state.name}
+            </option>
+          ))}
         </select>
       </div>
       
