@@ -1,40 +1,62 @@
 //code for the profile page
-
-import React, { useState } from 'react';
-import {useLocation, generatePath, useNavigate} from "react-router-dom";
-import "../../nav.css";
+import React, { useState, useEffect } from 'react';
+import { useLocation, generatePath, useNavigate } from 'react-router-dom';
+import Axios from 'axios';
+import states from './US_States';
+import '../../nav.css';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
   let navigate = useNavigate();
-  const {state} = useLocation();
+  const { state } = useLocation();
   const user_id = state.id;
 
   const initialState = {
-    fullName: "",
-    address1: "",
-    address2: "", 
-    city: "",
-    state: "",
-    zipcode: ""
+    fullName: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zipcode: '',
   };
 
-  //set state for form data and saved data
+  // Set state for form data and saved data
   const [formData, setFormData] = useState(initialState);
-  const [savedData, setSavedData] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  //handle change and submit functions
+
+  // Fetch user data when the component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await Axios.get(`http://localhost:3001/profile/${user_id}`);
+        setFormData(response.data);
+        setDataLoaded(true); // Data has been loaded
+      } catch (err) {
+        console.error(err);
+      }
+    };
+  
+    fetchData();
+  }, [user_id]);
+  
+
+  // Handle change and submit functions
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  //saves form data to saved data and sets edit mode to false
-  const handleSubmit = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    setSavedData(formData);
-    setEditMode(false);
+
+    try {
+      await Axios.put(`http://localhost:3001/profile/${user_id}`, formData);
+      setEditMode(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleEdit = () => {
@@ -89,9 +111,10 @@ const ProfilePage = () => {
       <h1>My Profile</h1>
 
       {/* if edit mode is false and saved data is not null, display saved data */}
-      {editMode || !savedData ? (
+      {editMode || !dataLoaded ? (
 
-        <form onSubmit={handleSubmit} data-testid="profile-form">
+        <form onSubmit={handleSave} data-testid="profile-form">
+
           <div className="grid-item">
             <label className="form-label" htmlFor="fullName">
               Full Name:
@@ -171,15 +194,15 @@ const ProfilePage = () => {
                 required
               >
                 <option value="">Select a state</option>
-                {/* Add your state options here */}
-                <option value="CA">California</option>
-                <option value="NY">New York</option>
-                {/* ... */}
+                {states.map((state) => (
+                  <option key={state.abbr} value={state.abbr}>
+                    {state.name}
+                  </option>
+                ))}
               </select>
             </label>
           </div>
 
-          
           <div className="grid-item">
             <label className="form-label" htmlFor="zipcode">
               Zipcode:
@@ -199,41 +222,49 @@ const ProfilePage = () => {
           </div>
 
           <div className="form-buttons">
-            <button type="submit">Save</button>
+            {editMode ? (
+              <button type="submit">Save</button>
+            ) : (
+              <button onClick={handleEdit} type="button">Edit</button>
+            )}
           </div>
-
         </form>
       ) : (
 
-        
-        <div>
-          <h2>Saved Data</h2>
-          <p>
-            <strong>Full Name:</strong> {savedData.fullName}
-          </p>
-          <p>
-            <strong>Address 1:</strong> {savedData.address1}
-          </p>
-          <p>
-            <strong>Address 2:</strong> {savedData.address2}
-          </p>
-          <p>
-            <strong>City:</strong> {savedData.city}
-          </p>
-          <p>
-            <strong>State:</strong> {savedData.state}
-          </p>
-          <p>
-            <strong>Zipcode:</strong> {savedData.zipcode}
-          </p>
-          <div className="form-buttons">
-          <button onClick={handleEdit} type = "button" >Edit</button>
+<div className="saved-data">
+  <h2 className="saved-data-title">Personal Information</h2>
+
+  <p className="saved-data-item">
+    <strong>Full Name:</strong> {formData.fullName}
+  </p>
+
+  <p className="saved-data-item">
+    <strong>Address 1:</strong> {formData.address1}
+  </p>
+
+  <p className="saved-data-item">
+    <strong>Address 2:</strong> {formData.address2}
+  </p>
+
+  <p className="saved-data-item">
+    <strong>City:</strong> {formData.city}
+  </p>
+
+  <p className="saved-data-item">
+    <strong>State:</strong> {formData.state}
+  </p>
+
+  <p className="saved-data-item">
+    <strong>Zipcode:</strong> {formData.zipcode}
+  </p>
+  
+  <div className="form-buttons">
+            <button onClick={handleEdit} type="button">Edit</button>
           </div>
         </div>
-        
       )}
     </div>
-    </>
+  </>
   );
 };
 
