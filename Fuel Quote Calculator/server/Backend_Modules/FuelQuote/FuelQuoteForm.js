@@ -6,6 +6,10 @@ const mySqlConnection = require('../../database');
 fuelquoteform.use(cors());
 fuelquoteform.use(express.json());
 
+const validation = require('../../Middlewares/validationMiddleware');
+const userSchema = require('../../Validations/getQuoteValidation');
+const submitSchema = require('../../Validations/submitQuoteValidation');
+
 function LocationFactor(user_id) { // helper function to determine Location Factor 
     return new Promise((resolve, reject) => {
         mySqlConnection.query("SELECT * FROM ClientInformation WHERE user_id = ?", [user_id],
@@ -26,16 +30,16 @@ function LocationFactor(user_id) { // helper function to determine Location Fact
 
 function HistoryFactor(user_id) { // helper function to determine History Factor
     return new Promise((resolve, reject) => {
-        mySqlConnection.query("SELECT count(*) FROM FuelQuote WHERE user_id = ?", [user_id],
+        mySqlConnection.query("SELECT * FROM FuelQuote WHERE user_id = ?", [user_id],
         (err, result) => {
             if (err) {
                 console.log(err);
                 reject(err);
             } else {
-                if (result === 0) {
-                    resolve(0);
-                } else {
+                if (result.length > 0) { // user has requested fuel before
                     resolve(.01);
+                } else {
+                    resolve(0);
                 }
             }
         })
@@ -64,7 +68,7 @@ fuelquoteform.post('/getAddress', async (req, res) => { //grab address info from
     }) 
 })
 
-fuelquoteform.post('/getQuote', async (req, res) => { // Pricing Module, grabs info from helper functions and calculates prices
+fuelquoteform.post('/getQuote', validation(userSchema), async (req, res) => { // Pricing Module, grabs info from helper functions and calculates prices
     const location = await LocationFactor(req.body.user_id);
     const ratefactor = await HistoryFactor(req.body.user_id);
     const gallonfactor = GallonFactor(req.body.gallons);
@@ -75,7 +79,7 @@ fuelquoteform.post('/getQuote', async (req, res) => { // Pricing Module, grabs i
     res.send({total: total, suggested_price: suggested_price});
 })
 
-fuelquoteform.post("/submitQuote", async (req, res) => { // save quote in database
+fuelquoteform.post("/submitQuote", validation(submitSchema), async (req, res) => { // save quote in database
     const gallons = req.body.gallons;
     const delivery_date = req.body.delivery_date;
     const total = req.body.total;
@@ -97,7 +101,7 @@ fuelquoteform.post("/submitQuote", async (req, res) => { // save quote in databa
             console.log(err)
         } else {
             console.log("values inserted");
-            res.send({responseMsg:"success"})
+            res.send({responseMsg: "Fuel Quote successfully submitted!"})
         }
     })  
   });
