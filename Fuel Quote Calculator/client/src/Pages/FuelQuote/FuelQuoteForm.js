@@ -178,6 +178,7 @@ function FuelQuoteForm() {
               type="date"
               //name="delivery_date"
               value = {delivery_date}
+              min = {new Date().toISOString().split('T')[0]}
               onChange={(event) => {
                 setDate(event.target.value);
               }}
