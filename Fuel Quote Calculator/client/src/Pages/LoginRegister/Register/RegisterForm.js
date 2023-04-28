@@ -9,7 +9,7 @@ export const RegisterForm = () => {
     let navigate = useNavigate();
     
     const schema = yup.object().shape ({
-        Username: yup.string().min(4).max(20).required("A username is required"),
+        Username: yup.string().max(20).required("A username is required"),
         Password: yup.string().min(4).max(20).required(),
     });
 
@@ -37,9 +37,9 @@ export const RegisterForm = () => {
         <div className="registerContainer">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className = "registerInputs" >
-                    <input type = "text" placeholder = "username" {...register("Username")}/>
+                    <input type = "text" placeholder = "username" {...register("Username")} maxLength="20"/>
                     <p> {errors.Username?.message} </p>
-                    <input type = "password" placeholder = "password" {...register("Password")}/>
+                    <input type = "password" placeholder = "password" {...register("Password")} maxLength="20"/>
                     <p> {errors.Password?.message} </p>
                     
                     <div className="signButton"> 
